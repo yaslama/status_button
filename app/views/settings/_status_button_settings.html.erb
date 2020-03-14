@@ -22,7 +22,7 @@
       <td><%= h(status.name) %></td>
       <td align="center">
         <%= select_tag	"settings[status_assigned_to][#{status.id}]",
-						options_for_select(options, settings['status_assigned_to'][status.id.to_s]),
+						options_for_select(options, 'settings[status_assigned_to][status.id.to_s]'),
 						:include_blank => true %>
 	  </td>
       </tr>
