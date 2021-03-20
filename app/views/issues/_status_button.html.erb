@@ -27,7 +27,13 @@ end
 plugin = Redmine::Plugin.find(:status_button)
 setting = Setting["plugin_#{plugin.id}"] || plugin.settings[:default]
 allowed_statuses = setting[:check_all_status] ? all_new_statuses_allowed_to(@issue) : @issue.new_statuses_allowed_to()
-for status in @issue.tracker.issue_statuses
+hide_unreachable_status =  setting[:hide_unreachable_status]
+if hide_unreachable_status
+  display_statuses=allowed_statuses
+else
+  display_statuses=@issue.tracker.issue_statuses
+end
+for status in display_statuses
 	if @issue.status == status
 		%><b>[<%= status.name %>]</b>&emsp;<%
 	else

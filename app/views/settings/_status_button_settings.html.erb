@@ -10,6 +10,10 @@
     <label>Add watchers automatically</label>
     <%= check_box_tag 'settings[add_watcher]', true, settings['add_watcher'] %>
   </p>
+  <p>
+    <label>Hide unreachable status</label>
+    <%= check_box_tag 'settings[hide_unreachable_status]', true, settings['hide_unreachable_status'] %>
+  </p>
   <table class="list">
     <thead><tr>
     <th><%=l(:field_status)%></th>
