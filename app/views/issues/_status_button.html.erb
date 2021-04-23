@@ -1,7 +1,9 @@
 <%
 	if StatusButton::Hooks.is_open?(@project)
 %>
-<tr><th class="status"><%= l(:field_status) + "-->" %></th><td class="status" colspan=3><%
+<%= javascript_include_tag "status_button.js", :plugin => 'status_button' %>
+<%= javascript_include_tag "hotkeys.min.js", :plugin => 'status_button' %>
+<div><div class="label"><%= l(:label_change_status) %>:</div><p class="buttons"><%
 # Returns an array of statuses that user is able to apply
 def all_new_statuses_allowed_to(issue)
 	user = User.current
@@ -33,16 +35,24 @@ if hide_unreachable_status
 else
   display_statuses=@issue.tracker.issue_statuses
 end
-for status in display_statuses
-	if @issue.status == status
-		%><b>[<%= status.name %>]</b>&emsp;<%
-	else
-		%>[<%= link_to_if allowed_statuses.include?(status),
-						status.name, "javascript:make_status(#{status.id})" %>]&emsp;<%
+for status in allowed_statuses
+	if status.id < 10
+	%><script>hotkeys('ctrl+<%="#{status.id}"%>', function() {make_status(<%="#{status.id}"%>);});</script><%
 	end
 end
-%></td></tr>
-<%= javascript_include_tag "status_button.js", :plugin => 'status_button' %>
+for status in display_statuses
+	if @issue.status == status
+		%><%
+	else
+		status_id_marker = ""
+		if status.id < 10
+			status_id_marker = " c-#{status.id}"
+		end
+		%><%= link_to_if allowed_statuses.include?(status),
+			"#{status.name}#{status_id_marker}", "javascript:make_status(#{status.id})" %>&ensp;<%
+	end
+end
+%></p></div>
 <%
 	end
 %>
