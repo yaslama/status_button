@@ -37,7 +37,7 @@ else
 end
 for status in allowed_statuses
 	if status.id < 10
-	%><script>hotkeys('ctrl+<%="#{status.id}"%>', function() {make_status(<%="#{status.id}"%>);});</script><%
+	%><script>hotkeys('ctrl+<%="#{status.id}"%>', function() {event.preventDefault(); make_status(<%="#{status.id}"%>);});</script><%
 	end
 end
 for status in display_statuses
